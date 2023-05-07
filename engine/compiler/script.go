@@ -25,17 +25,21 @@ func setupScript(src *resource.Step, dst *engine.Step, os string) {
 // helper function configures the pipeline script for the
 // windows operating system.
 func setupScriptWindows(src *resource.Step, dst *engine.Step) {
-	dst.Envs["SHELL"] = "pwsh"
-	dst.Envs["DRONE_SCRIPT"] = powershell.Script(src.Commands)
-	dst.ShellEntrypoint = dst.Envs["SHELL"]
-	dst.Command = []string{"-nop", "-noni", "-c", "Invoke-Expression", "$Env:DRONE_SCRIPT"}
+	if _, hasEnv := dst.Envs["CI_SHELL"]; !hasEnv {
+		dst.Envs["CI_SHELL"] = "pwsh"
+	}
+	dst.Envs["CI_SCRIPT"] = powershell.Script(src.Commands)
+	dst.ShellEntrypoint = dst.Envs["CI_SHELL"]
+	dst.Command = []string{"-nop", "-noni", "-c", "Invoke-Expression", "$Env:CI_SCRIPT"}
 }
 
 // helper function configures the pipeline script for the
 // linux operating system.
 func setupScriptPosix(src *resource.Step, dst *engine.Step) {
-	dst.Envs["SHELL"] = "/bin/sh"
-	dst.Envs["DRONE_SCRIPT"] = bash.Script(src.Commands)
-	dst.ShellEntrypoint = dst.Envs["SHELL"]
-	dst.Command = []string{"-c", "eval $DRONE_SCRIPT"}
+	if _, hasEnv := dst.Envs["CI_SHELL"]; !hasEnv {
+		dst.Envs["CI_SHELL"] = "/bin/bash"
+	}
+	dst.Envs["CI_SCRIPT"] = bash.Script(src.Commands)
+	dst.ShellEntrypoint = dst.Envs["CI_SHELL"]
+	dst.Command = []string{"-c", "eval $CI_SCRIPT"}
 }

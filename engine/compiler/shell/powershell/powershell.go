@@ -32,11 +32,11 @@ func Script(commands []string) string {
 // 3. Read CI_SHARE_* env vars from env file
 // 4. Remove share env file
 const startScript = `$OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = New-Object Text.UTF8Encoding
-if ($Env:DRONE_NETRC_MACHINE) {
-    echo $Env:DRONE_NETRC_FILE > (Join-Path $Env:USERPROFILE '_netrc');
-    $Env:DRONE_NETRC_USERNAME = $Env:DRONE_NETRC_PASSWORD = $Env:DRONE_NETRC_USERNAME = $Env:DRONE_NETRC_FILE = $null;
+if ($Env:CI_NETRC_MACHINE) {
+    echo $Env:CI_NETRC_FILE > (Join-Path $Env:USERPROFILE '_netrc');
+    $Env:CI_NETRC_USERNAME = $Env:CI_NETRC_PASSWORD = $Env:CI_NETRC_USERNAME = $Env:CI_NETRC_FILE = $null;
 }
-$Env:DRONE_SCRIPT = $null;
+$Env:CI_SCRIPT = $null;
 $erroractionpreference = "stop";
 
 $shareEnvPath = "$env:USERPROFILE/.ci_share_env"
