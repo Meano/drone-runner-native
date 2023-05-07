@@ -11,12 +11,13 @@ import (
 	"github.com/drone/runner-go/client"
 	"github.com/drone/runner-go/environ/provider"
 	"github.com/drone/runner-go/logger"
+	"github.com/drone/runner-go/pipeline"
 	"github.com/drone/runner-go/pipeline/reporter/remote"
 	"github.com/drone/runner-go/pipeline/runtime"
 	"github.com/drone/runner-go/secret"
 
+	"github.com/alecthomas/kingpin/v2"
 	"github.com/sirupsen/logrus"
-	"gopkg.in/alecthomas/kingpin.v2"
 )
 
 type processCommand struct {
@@ -99,6 +100,7 @@ func (c *processCommand) run(*kingpin.ParseContext) error {
 		Exec: runtime.NewExecer(
 			remote,
 			remote,
+			pipeline.NopUploader(),
 			engine,
 			config.Runner.Procs,
 		).Exec,

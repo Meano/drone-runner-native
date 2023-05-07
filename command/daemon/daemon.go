@@ -6,6 +6,7 @@ import (
 	"context"
 	"time"
 
+	"github.com/drone/runner-go/pipeline"
 	"github.com/meano/drone-runner-native/engine"
 	"github.com/meano/drone-runner-native/engine/compiler"
 	"github.com/meano/drone-runner-native/engine/linter"
@@ -25,10 +26,10 @@ import (
 	"github.com/drone/runner-go/server"
 	"github.com/drone/signal"
 
+	"github.com/alecthomas/kingpin/v2"
 	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
 	"golang.org/x/sync/errgroup"
-	"gopkg.in/alecthomas/kingpin.v2"
 )
 
 // empty context.
@@ -144,6 +145,7 @@ func (c *daemonCommand) run(*kingpin.ParseContext) error {
 		Exec: runtime.NewExecer(
 			tracer,
 			remote,
+			pipeline.NopUploader(),
 			engine,
 			config.Runner.Procs,
 		).Exec,

@@ -7,7 +7,7 @@ import (
 
 	"github.com/meano/drone-runner-native/command/daemon"
 
-	"gopkg.in/alecthomas/kingpin.v2"
+	"github.com/alecthomas/kingpin/v2"
 )
 
 var version = "0.1.0"

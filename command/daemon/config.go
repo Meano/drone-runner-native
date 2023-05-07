@@ -92,7 +92,7 @@ type Config struct {
 	}
 
 	Netrc struct {
-		CloneOnly bool `envconfig:"DRONE_NETRC_CLONE_ONLY"`
+		CloneOnly bool `envconfig:"CI_NETRC_CLONE_ONLY" default:"true"`
 	}
 
 	Registry struct {
